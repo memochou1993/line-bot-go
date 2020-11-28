@@ -1,4 +1,4 @@
-module github.com/memochou1993/line-chatbot
+module github.com/memochou1993/line-chat
 
 go 1.15
 
