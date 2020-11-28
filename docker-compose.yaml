@@ -1,0 +1,13 @@
+version: "3"
+
+services:
+  app:
+    container_name: line-chatbot
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    ports:
+      - "84:84"
+    restart: always
