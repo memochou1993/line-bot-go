@@ -1,14 +1,11 @@
 package main
 
 import (
-	"fmt"
+	_ "github.com/joho/godotenv/autoload"
 	"github.com/line/line-bot-sdk-go/linebot"
 	"log"
 	"net/http"
 	"os"
-	"strconv"
-
-	_ "github.com/joho/godotenv/autoload"
 )
 
 var (
@@ -37,6 +34,7 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 		} else {
 			w.WriteHeader(500)
 		}
+
 		return
 	}
 
@@ -44,15 +42,11 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 		if event.Type == linebot.EventTypeMessage {
 			switch message := event.Message.(type) {
 			case *linebot.TextMessage:
-				quota, err := client.GetMessageQuota().Do()
-				if err != nil {
+				if _, err := client.GetMessageQuota().Do(); err != nil {
 					log.Println(err.Error())
-					return
 				}
 
-				text := fmt.Sprintf("Received Message: %s (%s)", message.Text, strconv.FormatInt(quota.Value, 10))
-
-				if _, err = client.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(text)).Do(); err != nil {
+				if _, err = client.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(message.Text)).Do(); err != nil {
 					log.Println(err.Error())
 				}
 			}
