@@ -2,7 +2,7 @@ version: "3"
 
 services:
   app:
-    container_name: line-chat
+    container_name: line-bot-go
     build:
       context: .
       dockerfile: Dockerfile
